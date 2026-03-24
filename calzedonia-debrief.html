@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calzedonia — Débriefing Vente</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --noir: #1a1714;
+    --blanc: #faf8f5;
+    --beige: #f0ebe3;
+    --beige-sombre: #e0d8cc;
+    --sable: #c8b99a;
+    --corail: #c4614a;
+    --corail-clair: #e8917c;
+    --vert-ok: #4a7c5e;
+    --vert-clair: #d4ead9;
+    --orange-voie: #c47c2a;
+    --orange-clair: #f0ddb8;
+    --rouge-manq: #b83832;
+    --rouge-clair: #f0cec8;
+    --gris: #8a8278;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--beige);
+    color: var(--noir);
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  .header {
+    background: var(--noir);
+    padding: 28px 24px 22px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 9px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--sable);
+    margin-bottom: 6px;
+  }
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 22px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--blanc);
+  }
+  .header h1 span { color: var(--corail-clair); }
+
+  .identity-bar {
+    background: var(--blanc);
+    border-bottom: 1px solid var(--beige-sombre);
+    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .identity-bar input {
+    background: var(--beige);
+    border: 1px solid var(--beige-sombre);
+    border-radius: 2px;
+    padding: 10px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--noir);
+    width: 100%;
+  }
+  .identity-bar input:focus { outline: none; border-color: var(--sable); }
+  .identity-bar input::placeholder { color: var(--gris); font-weight: 300; }
+  .identity-ts {
+    grid-column: 1 / -1;
+    font-size: 11px;
+    color: var(--gris);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    padding-top: 2px;
+  }
+
+  .score-global {
+    margin: 16px 16px 0;
+    border-radius: 4px;
+    padding: 16px 20px;
+    background: var(--blanc);
+    border: 1.5px solid var(--beige-sombre);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.4s ease;
+  }
+  .score-globe-dot {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--beige-sombre);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--blanc);
+    transition: all 0.4s ease;
+  }
+  .score-globe-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+  .score-globe-text p {
+    font-size: 11px;
+    color: var(--gris);
+    margin-top: 2px;
+    font-weight: 300;
+  }
+
+  .main {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .bloc {
+    background: var(--blanc);
+    border-radius: 4px;
+    border: 1px solid var(--beige-sombre);
+    overflow: hidden;
+  }
+  .bloc-header {
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--beige-sombre);
+    background: var(--beige);
+  }
+  .bloc-header-left { display: flex; align-items: center; gap: 10px; }
+  .bloc-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--sable);
+    line-height: 1;
+  }
+  .bloc-title-wrap h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+  }
+  .bloc-title-wrap p {
+    font-size: 10px;
+    color: var(--gris);
+    font-weight: 300;
+    margin-top: 1px;
+  }
+  .bloc-score-badge {
+    padding: 5px 11px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    background: var(--beige-sombre);
+    color: var(--gris);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  /* ── ACCORDÉON MANAGER ─── */
+  .coach-bloc {
+    border-radius: 4px;
+    border: 1px solid #2d2924;
+    overflow: hidden;
+  }
+  .coach-toggle {
+    width: 100%;
+    background: var(--noir);
+    border: none;
+    cursor: pointer;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .coach-toggle-left { display: flex; align-items: center; gap: 10px; }
+  .coach-toggle .bloc-num { color: #5a4e44; }
+  .coach-toggle .bloc-title-wrap h3 {
+    color: var(--blanc);
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 15px;
+    letter-spacing: 1px;
+  }
+  .coach-toggle .bloc-title-wrap p { color: #6b5e54; }
+  .toggle-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .toggle-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1.5px solid #3a3530;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--sable);
+    font-size: 18px;
+    font-weight: 200;
+    line-height: 1;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+  }
+  .coach-toggle.open .toggle-icon { border-color: var(--sable); background: #2a2520; }
+  .coach-body { display: none; background: var(--blanc); }
+  .coach-body.open { display: block; }
+
+  /* ── ITEMS & CASES 3 ÉTATS ─── */
+  .item-list { padding: 6px 0; }
+  .item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 18px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--beige);
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  .item:last-child { border-bottom: none; }
+  .item:active { background: var(--beige); }
+
+  .check-box {
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid var(--beige-sombre);
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: transparent;
+    background: var(--beige);
+    transition: all 0.18s ease;
+  }
+
+  /* État 1 — VERT */
+  .item[data-s="1"] .check-box { background: var(--vert-ok); border-color: var(--vert-ok); color: white; }
+  .item[data-s="1"] .item-label { color: var(--vert-ok); }
+  /* État 2 — ORANGE */
+  .item[data-s="2"] .check-box { background: var(--orange-voie); border-color: var(--orange-voie); color: white; }
+  .item[data-s="2"] .item-label { color: var(--orange-voie); }
+  /* État 3 — ROUGE */
+  .item[data-s="3"] .check-box { background: var(--rouge-manq); border-color: var(--rouge-manq); color: white; }
+  .item[data-s="3"] .item-label { color: var(--rouge-manq); font-weight: 500; }
+
+  .item-content { flex: 1; line-height: 1.5; }
+  .item-label { font-size: 13px; font-weight: 400; color: var(--noir); transition: color 0.15s; }
+  .item-sub { font-size: 11px; color: var(--gris); font-weight: 300; margin-top: 2px; }
+
+  .legend {
+    display: flex;
+    gap: 14px;
+    padding: 9px 18px;
+    border-top: 1px solid var(--beige-sombre);
+    background: var(--beige);
+    flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--gris); font-weight: 300; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+  .legend-hint { margin-left: auto; font-style: italic; font-size: 10px; color: var(--sable); }
+
+  .comments-wrap { padding: 16px; }
+  .comments-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gris);
+    margin-bottom: 8px;
+    display: block;
+    font-weight: 400;
+  }
+  textarea {
+    width: 100%;
+    background: var(--beige);
+    border: 1px solid var(--beige-sombre);
+    border-radius: 2px;
+    padding: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--noir);
+    resize: vertical;
+    min-height: 80px;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+  textarea:focus { outline: none; border-color: var(--sable); }
+
+  .export-wrap { padding: 16px; padding-top: 0; }
+  .btn-export {
+    width: 100%;
+    background: var(--noir);
+    color: var(--blanc);
+    border: none;
+    padding: 15px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    font-weight: 400;
+  }
+  .btn-export:active { background: var(--corail); }
+
+  @media print {
+    .header { position: static; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .btn-export, .export-wrap, .legend-hint { display: none; }
+    body { background: white; }
+    .coach-body { display: block !important; }
+  }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 23, 20, 0.72);
+    z-index: 200;
+    align-items: flex-end;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--blanc);
+    width: 100%;
+    max-height: 85vh;
+    border-radius: 6px 6px 0 0;
+    overflow-y: auto;
+    padding: 24px 20px 32px;
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .modal-handle { width: 36px; height: 3px; background: var(--beige-sombre); border-radius: 2px; margin: 0 auto 20px; }
+  .modal h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 20px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .export-section { margin-bottom: 20px; }
+  .export-section h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gris);
+    border-bottom: 1px solid var(--beige-sombre);
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+  }
+  .export-meta { font-size: 12px; color: var(--gris); line-height: 2; font-weight: 300; }
+  .export-meta strong { color: var(--noir); font-weight: 500; }
+  .export-status { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 500; margin-bottom: 10px; }
+  .export-row { font-size: 12px; line-height: 2; font-weight: 300; display: flex; align-items: center; gap: 7px; }
+  .er-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+  .btn-copy, .btn-print, .btn-close {
+    flex: 1; padding: 12px 8px; border: none; border-radius: 2px;
+    font-family: 'DM Sans', sans-serif; font-size: 10px; letter-spacing: 2px;
+    text-transform: uppercase; cursor: pointer; font-weight: 500;
+  }
+  .btn-share { background: var(--corail); color: white; }
+  .btn-copy { background: var(--noir); color: var(--blanc); }
+  .btn-close { background: var(--beige); color: var(--noir); }
+
+  .toast {
+    position: fixed; bottom: 20px; left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    background: var(--noir); color: var(--blanc);
+    padding: 10px 20px; border-radius: 20px; font-size: 12px;
+    letter-spacing: 1px; z-index: 300; transition: transform 0.3s ease;
+    pointer-events: none; white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">Outil de pilotage terrain</div>
+  <h1>Calzedonia <span>·</span> Débriefing Vente</h1>
+</div>
+
+<div class="identity-bar">
+  <input type="text" id="ecoutee" placeholder="Nom de l'écoutée" autocomplete="off">
+  <input type="text" id="coach" placeholder="Nom du coach" autocomplete="off">
+  <div class="identity-ts" id="timestamp"></div>
+</div>
+
+<div class="score-global" id="scoreGlobal">
+  <div class="score-globe-dot" id="globalDot">—</div>
+  <div class="score-globe-text">
+    <h2 id="globalLabel">Score global</h2>
+    <p id="globalSub">Touchez les cases pour évaluer</p>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="bloc">
+    <div class="bloc-header">
+      <div class="bloc-header-left">
+        <div class="bloc-num">01</div>
+        <div class="bloc-title-wrap">
+          <h3>Parcours de vente</h3>
+          <p>Ce que j'attends d'un service client d'excellence</p>
+        </div>
+      </div>
+      <div class="bloc-score-badge" id="score1">—</div>
+    </div>
+    <div class="item-list" id="list1"></div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--vert-ok)"></div>OK</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--orange-voie)"></div>En cours</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--rouge-manq)"></div>À travailler</div>
+      <div class="legend-hint">Tap = cycle</div>
+    </div>
+  </div>
+
+  <div class="coach-bloc">
+    <button class="coach-toggle" id="coachToggle" onclick="toggleCoach()">
+      <div class="coach-toggle-left">
+        <div class="bloc-num">02</div>
+        <div class="bloc-title-wrap">
+          <h3>Le coin du coach</h3>
+          <p>Checklist de posture coach</p>
+        </div>
+      </div>
+      <div class="toggle-right">
+        <div class="bloc-score-badge" id="score2" style="background:#2a2520;color:#6b5e54">—</div>
+        <div class="toggle-icon" id="toggleIcon">+</div>
+      </div>
+    </button>
+    <div class="coach-body" id="coachBody">
+      <div class="item-list" id="list2"></div>
+      <div class="legend" style="background:#f7f4f0;border-top-color:var(--beige-sombre)">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--vert-ok)"></div>Fait</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--orange-voie)"></div>Partiel</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--rouge-manq)"></div>Manquant</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bloc">
+    <div class="comments-wrap">
+      <label class="comments-label" for="comments">Commentaires libres</label>
+      <textarea id="comments" placeholder="Points de contexte, situation particulière, axes prioritaires…"></textarea>
+    </div>
+  </div>
+
+</div>
+
+<div class="export-wrap">
+  <button class="btn-export" onclick="openModal()">Exporter le bilan</button>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>Bilan de séance</h2>
+    <div id="exportContent"></div>
+    <div class="modal-actions">
+      <button class="btn-share" onclick="shareNatif()">↑ Partager</button>
+      <button class="btn-copy" onclick="copyText()">Copier</button>
+      <button class="btn-close" onclick="closeModal()">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Copié dans le presse-papier</div>
+
+<script>
+const items1 = [
+  { label: "Bonjour chaleureux", sub: "Regard, sourire, bienvenue" },
+  { label: "Observation cliente", sub: "Lire la cliente avant l'accroche" },
+  { label: "Phrase d'accroche ouverte", sub: "Centrée sur elle, question ouverte" },
+  { label: "Recherche des besoins", sub: "Je vends au besoin" },
+  { label: "Création d'un nouveau besoin", sub: "Découverte marque, achat par lot" },
+  { label: "Argumentaire produit", sub: "2 arguments : confort + expertise" },
+  { label: "Projection dans une tenue", sub: "Je visualise avec elle" },
+  { label: "Création d'émotion", sub: "Je fais rire, la cliente remercie = gagné" },
+  { label: "Fidélisation", sub: "Saisonnalité + carte fidélité" },
+  { label: "Posture", sub: "Dynamique, ouverte, souriante, langage adapté" },
+];
+const items2 = [
+  { label: "Souligne un positif", sub: "Toujours commencer par un point fort" },
+  { label: "Questionne la vendeuse", sub: "« Qu'as-tu pensé de ta vente ? »" },
+  { label: "Check factuel du parcours", sub: "Souligne les problématiques sans jugement" },
+  { label: "Part de la collaboratrice", sub: "« Comment aurais-tu pu faire ? »" },
+  { label: "Verrouille par l'exemple", sub: "« Donne-moi ta phrase d'accroche pour ce cas »" },
+  { label: "Reboost pour la suite", sub: "Projette vers la prochaine vente" },
+];
+
+// 0=vide 1=vert 2=orange 3=rouge
+const state = {
+  bloc1: new Array(items1.length).fill(0),
+  bloc2: new Array(items2.length).fill(0),
+};
+
+const S_ICON  = ['', '✓', '~', '✕'];
+const S_COLOR = ['#ccc', '#4a7c5e', '#c47c2a', '#b83832'];
+const S_BG    = ['var(--beige)', 'var(--vert-ok)', 'var(--orange-voie)', 'var(--rouge-manq)'];
+const S_TEXT  = ['Non évalué', 'OK', 'En cours', 'À travailler'];
+const S_LABEL = ['—', '✓ Tout est OK', '◐ Sur la voie', '✕ Trop de manquants'];
+
+const ST_COLORS = { vert: '#4a7c5e', orange: '#c47c2a', rouge: '#b83832' };
+const ST_BG     = { vert: '#d4ead9', orange: '#f0ddb8', rouge: '#f0cec8' };
+const ST_LABELS = { vert: '✓ Tout est OK', orange: '◐ Sur la voie', rouge: '✕ Trop de manquants' };
+
+function getWeighted(blocKey) {
+  return state[blocKey].reduce((a, v) => a + (v === 1 ? 1 : v === 2 ? 0.5 : 0), 0);
+}
+function getFilled(blocKey) {
+  return state[blocKey].filter(v => v > 0).length;
+}
+function getStatus(w, total) {
+  const p = w / total;
+  return p >= 0.8 ? 'vert' : p >= 0.5 ? 'orange' : 'rouge';
+}
+
+function toggle(blocKey, i) {
+  state[blocKey][i] = (state[blocKey][i] + 1) % 4;
+  updateAll();
+}
+
+function renderList(listId, items, blocKey) {
+  const c = document.getElementById(listId);
+  c.innerHTML = '';
+  items.forEach((item, i) => {
+    const s = state[blocKey][i];
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.setAttribute('data-s', s);
+    div.innerHTML = `
+      <div class="check-box">${S_ICON[s]}</div>
+      <div class="item-content">
+        <div class="item-label">${item.label}</div>
+        ${item.sub ? `<div class="item-sub">${item.sub}</div>` : ''}
+      </div>`;
+    div.onclick = () => toggle(blocKey, i);
+    c.appendChild(div);
+  });
+}
+
+function updateAll() {
+  const t1 = items1.length, t2 = items2.length;
+  const w1 = getWeighted('bloc1'), w2 = getWeighted('bloc2');
+  const f1 = getFilled('bloc1'), f2 = getFilled('bloc2');
+
+  // badge 1
+  const b1 = document.getElementById('score1');
+  if (f1 > 0) {
+    const st = getStatus(w1, t1);
+    b1.textContent = `${f1}/${t1} — ${ST_LABELS[st]}`;
+    b1.style.background = ST_BG[st];
+    b1.style.color = ST_COLORS[st];
+  } else {
+    b1.textContent = `0/${t1}`;
+    b1.style.background = 'var(--beige-sombre)';
+    b1.style.color = 'var(--gris)';
+  }
+
+  // badge 2 — progression coach uniquement, sans impact score global
+  const b2 = document.getElementById('score2');
+  const coachDone = state.bloc2.filter(v => v === 1).length;
+  if (f2 > 0) {
+    b2.textContent = `${coachDone}/${t2} faits`;
+    b2.style.background = coachDone === t2 ? ST_BG.vert : '#2a2520';
+    b2.style.color = coachDone === t2 ? ST_COLORS.vert : '#9a8e84';
+  } else {
+    b2.textContent = `0/${t2}`;
+    b2.style.background = '#2a2520';
+    b2.style.color = '#6b5e54';
+  }
+
+  // global = bloc1 seulement (le coin du coach n'entre pas dans l'évaluation)
+  const dot = document.getElementById('globalDot');
+  const sg  = document.getElementById('scoreGlobal');
+  if (f1 === 0) {
+    dot.textContent = '—';
+    dot.style.background = 'var(--beige-sombre)';
+    dot.style.color = 'var(--gris)';
+    sg.style.borderColor = 'var(--beige-sombre)';
+    sg.style.background = 'var(--blanc)';
+    document.getElementById('globalLabel').textContent = 'Score global';
+    document.getElementById('globalSub').textContent = 'Touchez les cases pour évaluer';
+  } else {
+    const pct = Math.round((w1 / t1) * 100);
+    const gs = getStatus(w1, t1);
+    dot.textContent = pct + '%';
+    dot.style.background = ST_COLORS[gs];
+    dot.style.color = '#fff';
+    sg.style.borderColor = ST_COLORS[gs];
+    sg.style.background = { vert: '#f4faf6', orange: '#fffbf4', rouge: '#fff8f7' }[gs];
+    document.getElementById('globalLabel').textContent = ST_LABELS[gs];
+    document.getElementById('globalSub').textContent = `Parcours vente · ${f1}/${t1} items évalués`;
+  }
+
+  renderList('list1', items1, 'bloc1');
+  renderList('list2', items2, 'bloc2');
+}
+
+let coachOpen = false;
+function toggleCoach() {
+  coachOpen = !coachOpen;
+  document.getElementById('coachBody').classList.toggle('open', coachOpen);
+  document.getElementById('coachToggle').classList.toggle('open', coachOpen);
+  document.getElementById('toggleIcon').textContent = coachOpen ? '−' : '+';
+}
+
+function getTimestamp() {
+  const n = new Date();
+  return n.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+    + ' · ' + n.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+}
+
+function buildExportHTML() {
+  const ecoutee  = document.getElementById('ecoutee').value || '—';
+  const coach  = document.getElementById('coach').value || '—';
+  const ts       = getTimestamp();
+  const t1 = items1.length, t2 = items2.length;
+  const w1 = getWeighted('bloc1');
+  const f1 = getFilled('bloc1'), f2 = getFilled('bloc2');
+  const coachDone = state.bloc2.filter(v => v === 1).length;
+  const gSt = f1 > 0 ? getStatus(w1, t1) : null;
+  const pct = gSt ? Math.round((w1 / t1) * 100) : null;
+  const comments = document.getElementById('comments').value;
+  const st1 = f1 > 0 ? getStatus(w1, t1) : null;
+
+  function rows(items, bk) {
+    return items.map((item, i) => {
+      const v = state[bk][i];
+      return `<div class="export-row">
+        <div class="er-dot" style="background:${S_COLOR[v]}"></div>
+        <span style="color:${S_COLOR[v]};font-size:10px;min-width:68px">${S_TEXT[v]}</span>
+        <span style="color:${v === 3 ? '#b83832' : '#333'};font-weight:${v === 3 ? '500' : '300'}">${item.label}</span>
+      </div>`;
+    }).join('');
+  }
+
+  // coach section : simple check (vert=fait, autre=non fait)
+  function coachRows() {
+    return items2.map((item, i) => {
+      const v = state.bloc2[i];
+      const done = v === 1;
+      return `<div class="export-row">
+        <div class="er-dot" style="background:${done ? '#4a7c5e' : '#ccc'}"></div>
+        <span style="color:${done ? '#4a7c5e' : '#aaa'};font-weight:${done ? '500' : '300'}">${done ? '✓ Fait' : '○ À faire'}</span>
+        <span style="color:#333;font-weight:300;margin-left:4px">${item.label}</span>
+      </div>`;
+    }).join('');
+  }
+
+  return `
+    <div class="export-section">
+      <h4>Identification</h4>
+      <div class="export-meta">
+        <strong>Écoutée :</strong> ${ecoutee}<br>
+        <strong>Coach :</strong> ${coach}<br>
+        <strong>Date & heure :</strong> ${ts}
+      </div>
+    </div>
+    <div class="export-section">
+      <h4>Score — Parcours de vente</h4>
+      ${st1
+        ? `<span class="export-status" style="background:${ST_BG[st1]};color:${ST_COLORS[st1]}">${pct}% — ${ST_LABELS[st1]}</span>`
+        : `<span class="export-status" style="background:#f0ebe3;color:#8a8278">Non renseigné</span>`}
+      <div class="export-meta">${f1}/${t1} items évalués · Le coin du coach n'entre pas dans ce score</div>
+    </div>
+    <div class="export-section">
+      <h4>01 — Parcours de vente (${f1}/${t1})</h4>
+      ${rows(items1, 'bloc1')}
+    </div>
+    <div class="export-section" style="border-top:2px solid #1a1714;padding-top:14px">
+      <h4 style="color:#1a1714">02 — Le coin du coach · Checklist (${coachDone}/${t2} faits)</h4>
+      <div class="export-meta" style="margin-bottom:8px;font-style:italic">Usage interne coach — ne compte pas dans l'évaluation</div>
+      ${coachRows()}
+    </div>
+    ${comments ? `<div class="export-section"><h4>Commentaires</h4><div class="export-meta" style="white-space:pre-wrap">${comments}</div></div>` : ''}
+  `;
+}
+
+function buildShareMessage() {
+  const ecoutee = document.getElementById('ecoutee').value || '—';
+  const coach   = document.getElementById('coach').value || '—';
+  const ts      = getTimestamp();
+  const t1 = items1.length;
+  const w1 = getWeighted('bloc1');
+  const f1 = getFilled('bloc1');
+  const gSt = f1 > 0 ? getStatus(w1, t1) : null;
+  const pct = gSt ? Math.round((w1 / t1) * 100) : null;
+  const comments = document.getElementById('comments').value;
+
+  const statusEmoji = { vert: '🟢', orange: '🟠', rouge: '🔴' };
+  const statusText  = { vert: 'Tout est OK', orange: 'Sur la voie', rouge: 'Points à travailler' };
+
+  // Grouper les items par statut
+  const ok      = items1.filter((_, i) => state.bloc1[i] === 1).map(it => it.label);
+  const enCours = items1.filter((_, i) => state.bloc1[i] === 2).map(it => it.label);
+  const aTrav   = items1.filter((_, i) => state.bloc1[i] === 3).map(it => it.label);
+  const nonEval = items1.filter((_, i) => state.bloc1[i] === 0).map(it => it.label);
+
+  let msg = `🏪 *CALZEDONIA — Débriefing vente*\n`;
+  msg += `━━━━━━━━━━━━━━━━━━━\n`;
+  msg += `👤 *Vendeur·se :* ${ecoutee}\n`;
+  msg += `🎯 *Coach :* ${coach}\n`;
+  msg += `📅 ${ts}\n\n`;
+
+  if (gSt) {
+    msg += `${statusEmoji[gSt]} *Score : ${pct}% — ${statusText[gSt]}*\n`;
+    msg += `━━━━━━━━━━━━━━━━━━━\n\n`;
+  }
+
+  msg += `📋 *PARCOURS DE VENTE (${f1}/${t1})*\n\n`;
+
+  if (ok.length)      msg += `✅ *Points forts*\n${ok.map(l => `• ${l}`).join('\n')}\n\n`;
+  if (enCours.length) msg += `🔶 *En progression*\n${enCours.map(l => `• ${l}`).join('\n')}\n\n`;
+  if (aTrav.length)   msg += `🔴 *À travailler en priorité*\n${aTrav.map(l => `• ${l}`).join('\n')}\n\n`;
+  if (nonEval.length && f1 > 0) msg += `⬜ *Non évalué*\n${nonEval.map(l => `• ${l}`).join('\n')}\n\n`;
+
+  if (comments) {
+    msg += `━━━━━━━━━━━━━━━━━━━\n`;
+    msg += `💬 *Commentaires*\n${comments}\n`;
+  }
+
+  return msg;
+}
+
+function buildExportText() {
+  return buildShareMessage();
+}
+
+function shareNatif() {
+  const ecoutee = document.getElementById('ecoutee').value || 'Vendeur·se';
+  const msg = buildShareMessage().replace(/\*/g, '');
+  if (navigator.share) {
+    navigator.share({
+      title: `Débriefing vente — ${ecoutee}`,
+      text: msg,
+    }).catch(() => {});
+  } else {
+    // Fallback desktop : copie + toast
+    navigator.clipboard.writeText(msg).then(() => {
+      const t = document.getElementById('toast');
+      t.textContent = 'Copié — colle où tu veux !';
+      t.classList.add('show');
+      setTimeout(() => { t.classList.remove('show'); t.textContent = 'Copié dans le presse-papier'; }, 2500);
+    });
+  }
+}
+
+function openModal() {
+  document.getElementById('exportContent').innerHTML = buildExportHTML();
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+function copyText() {
+  navigator.clipboard.writeText(buildExportText()).then(() => {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  });
+}
+
+document.getElementById('timestamp').textContent = 'Séance du ' + getTimestamp();
+renderList('list1', items1, 'bloc1');
+renderList('list2', items2, 'bloc2');
+</script>
+</body>
+</html>
