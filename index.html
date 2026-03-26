@@ -406,21 +406,25 @@
 <body>
 
 <div class="header">
-  <div class="header-eyebrow">Outil de pilotage terrain</div>
-  <h1>Calzedonia <span>·</span> Débriefing Vente</h1>
+  <div class="header-eyebrow" id="txt-eyebrow">Outil de pilotage terrain</div>
+  <h1>Calzedonia <span>·</span> <span id="txt-title">Débriefing Vente</span></h1>
+  <div style="margin-top:10px">
+    <button onclick="setLang('fr')" id="btn-fr" style="background:none;border:1px solid #5a4e44;color:var(--sable);font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:2px;padding:4px 10px;border-radius:20px;cursor:pointer;margin:0 3px;transition:all 0.2s">🇫🇷 FR</button>
+    <button onclick="setLang('it')" id="btn-it" style="background:none;border:1px solid #5a4e44;color:var(--sable);font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:2px;padding:4px 10px;border-radius:20px;cursor:pointer;margin:0 3px;transition:all 0.2s">🇮🇹 IT</button>
+  </div>
 </div>
 
 <div class="identity-bar">
-  <input type="text" id="ecoutee" placeholder="Nom de l'écoutée" autocomplete="off">
-  <input type="text" id="coach" placeholder="Nom du coach" autocomplete="off">
+  <input type="text" id="ecoutee" data-ph-fr="Nom de l'écoutée" data-ph-it="Nome della venditrice" placeholder="Nom de l'écoutée" autocomplete="off">
+  <input type="text" id="coach" data-ph-fr="Nom du coach" data-ph-it="Nome del coach" placeholder="Nom du coach" autocomplete="off">
   <div class="identity-ts" id="timestamp"></div>
 </div>
 
 <div class="score-global" id="scoreGlobal">
   <div class="score-globe-dot" id="globalDot">—</div>
   <div class="score-globe-text">
-    <h2 id="globalLabel">Score global</h2>
-    <p id="globalSub">Touchez les cases pour évaluer</p>
+    <h2 id="globalLabel" data-fr="Score global" data-it="Punteggio globale">Score global</h2>
+    <p id="globalSub" data-fr="Touchez les cases pour évaluer" data-it="Tocca le caselle per valutare">Touchez les cases pour évaluer</p>
   </div>
 </div>
 
@@ -431,18 +435,18 @@
       <div class="bloc-header-left">
         <div class="bloc-num">01</div>
         <div class="bloc-title-wrap">
-          <h3>Parcours de vente</h3>
-          <p>Ce que j'attends d'un service client d'excellence</p>
+          <h3 id="txt-bloc1-title">Parcours de vente</h3>
+          <p id="txt-bloc1-sub">Ce que j'attends d'un service client d'excellence</p>
         </div>
       </div>
       <div class="bloc-score-badge" id="score1">—</div>
     </div>
     <div class="item-list" id="list1"></div>
     <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background:var(--vert-ok)"></div>OK</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--orange-voie)"></div>En cours</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--rouge-manq)"></div>À travailler</div>
-      <div class="legend-hint">Tap = cycle</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--vert-ok)"></div><span id="txt-ok">OK</span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--orange-voie)"></div><span id="txt-encours">En cours</span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--rouge-manq)"></div><span id="txt-atrav">À travailler</span></div>
+      <div class="legend-hint" id="txt-hint">Tap = cycle</div>
     </div>
   </div>
 
@@ -451,8 +455,8 @@
       <div class="coach-toggle-left">
         <div class="bloc-num">02</div>
         <div class="bloc-title-wrap">
-          <h3>Le coin du coach</h3>
-          <p>Checklist de posture coach</p>
+          <h3 id="txt-bloc2-title">Le coin du coach</h3>
+          <p id="txt-bloc2-sub">Checklist de posture coach</p>
         </div>
       </div>
       <div class="toggle-right">
@@ -463,35 +467,35 @@
     <div class="coach-body" id="coachBody">
       <div class="item-list" id="list2"></div>
       <div class="legend" style="background:#f7f4f0;border-top-color:var(--beige-sombre)">
-        <div class="legend-item"><div class="legend-dot" style="background:var(--vert-ok)"></div>Fait</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--orange-voie)"></div>Partiel</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--rouge-manq)"></div>Manquant</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--vert-ok)"></div><span id="txt-fait">Fait</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--orange-voie)"></div><span id="txt-partiel">Partiel</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--rouge-manq)"></div><span id="txt-manquant">Manquant</span></div>
       </div>
     </div>
   </div>
 
   <div class="bloc">
     <div class="comments-wrap">
-      <label class="comments-label" for="comments">Commentaires libres</label>
-      <textarea id="comments" placeholder="Points de contexte, situation particulière, axes prioritaires…"></textarea>
+      <label class="comments-label" id="txt-comments-label" for="comments">Commentaires libres</label>
+      <textarea id="comments" data-ph-fr="Points de contexte, situation particulière, axes prioritaires…" data-ph-it="Contesto, situazione particolare, assi prioritari…" placeholder="Points de contexte, situation particulière, axes prioritaires…"></textarea>
     </div>
   </div>
 
 </div>
 
 <div class="export-wrap">
-  <button class="btn-export" onclick="openModal()">Exporter le bilan</button>
+  <button class="btn-export" id="txt-btn-export" onclick="openModal()">Exporter le bilan</button>
 </div>
 
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
   <div class="modal">
     <div class="modal-handle"></div>
-    <h2>Bilan de séance</h2>
+    <h2 id="txt-modal-title">Bilan de séance</h2>
     <div id="exportContent"></div>
     <div class="modal-actions">
-      <button class="btn-share" onclick="shareNatif()">↑ Partager</button>
-      <button class="btn-copy" onclick="copyText()">Copier</button>
-      <button class="btn-close" onclick="closeModal()">Fermer</button>
+      <button class="btn-share" id="txt-btn-share" onclick="shareNatif()">↑ Partager</button>
+      <button class="btn-copy" id="txt-btn-copy" onclick="copyText()">Copier</button>
+      <button class="btn-close" id="txt-btn-close" onclick="closeModal()">Fermer</button>
     </div>
   </div>
 </div>
@@ -499,42 +503,198 @@
 <div class="toast" id="toast">Copié dans le presse-papier</div>
 
 <script>
-const items1 = [
-  { label: "Bonjour chaleureux", sub: "Regard, sourire, bienvenue" },
-  { label: "Observation cliente", sub: "Lire la cliente avant l'accroche" },
-  { label: "Phrase d'accroche ouverte", sub: "Centrée sur elle, question ouverte" },
-  { label: "Recherche des besoins", sub: "Je vends au besoin" },
-  { label: "Création d'un nouveau besoin", sub: "Découverte marque, achat par lot" },
-  { label: "Argumentaire produit", sub: "2 arguments : confort + expertise" },
-  { label: "Projection dans une tenue", sub: "Je visualise avec elle" },
-  { label: "Création d'émotion", sub: "Je fais rire, la cliente remercie = gagné" },
-  { label: "Fidélisation", sub: "Saisonnalité + carte fidélité" },
-  { label: "Posture", sub: "Dynamique, ouverte, souriante, langage adapté" },
-];
-const items2 = [
-  { label: "Souligne un positif", sub: "Toujours commencer par un point fort" },
-  { label: "Questionne la vendeuse", sub: "« Qu'as-tu pensé de ta vente ? »" },
-  { label: "Check factuel du parcours", sub: "Souligne les problématiques sans jugement" },
-  { label: "Part de la collaboratrice", sub: "« Comment aurais-tu pu faire ? »" },
-  { label: "Verrouille par l'exemple", sub: "« Donne-moi ta phrase d'accroche pour ce cas »" },
-  { label: "Reboost pour la suite", sub: "Projette vers la prochaine vente" },
-];
+const ITEMS1 = {
+  fr: [
+    { label: "Bonjour chaleureux",         sub: "Regard, sourire, bienvenue" },
+    { label: "Observation cliente",         sub: "Lire la cliente avant l'accroche" },
+    { label: "Phrase d'accroche",           sub: "Je parle produit OU « En quoi puis-je vous aider ? » — jamais les deux" },
+    { label: "Recherche des besoins",       sub: "Je détecte les motivations d'achat — minimum 3 questions" },
+    { label: "Argumentaire produit",        sub: "3 arguments : confort · expertise · tendance (Best)" },
+    { label: "Proposition d'essayage",      sub: "J'accompagne en cabine, je vérifie le bon porté" },
+    { label: "Créer un nouveau besoin",     sub: "Tendance, projection tenue, panoplie, saisonnalité" },
+    { label: "Proposition de l'offre",      sub: "Vente par lot" },
+    { label: "Fidélisation",               sub: "Programme fidélité · -10% appli · j'incite à revenir" },
+    { label: "Créateur d'émotion",         sub: "Moment agréable & personnalisé au-delà de l'acte d'achat — rire, échange, « pour quelle occasion ? »" },
+    { label: "Posture",                    sub: "Dynamique, ouverte, souriante, langage adapté" },
+  ],
+  it: [
+    { label: "Saluto caloroso",            sub: "Sguardo, sorriso, benvenuto" },
+    { label: "Osservazione della cliente", sub: "Leggere la cliente prima dell'approccio" },
+    { label: "Frase d'approccio",          sub: "Parlo del prodotto OPPURE « Come posso aiutarla? » — mai entrambe" },
+    { label: "Ricerca dei bisogni",        sub: "Rilevare le motivazioni d'acquisto — minimo 3 domande" },
+    { label: "Argomentazione prodotto",    sub: "3 argomenti: comfort · expertise · tendenza (Best)" },
+    { label: "Proposta di prova",          sub: "Accompagno in cabina, verifico la vestibilità" },
+    { label: "Creare un nuovo bisogno",    sub: "Tendenza, proiezione outfit, coordinato, stagionalità" },
+    { label: "Proposta dell'offerta",      sub: "Vendita a lotto" },
+    { label: "Fidelizzazione",            sub: "Programma fedeltà · -10% app · invito a tornare" },
+    { label: "Creare emozione",           sub: "Momento piacevole e personalizzato oltre l'atto d'acquisto — risata, scambio, « per quale occasione? »" },
+    { label: "Postura",                   sub: "Dinamica, aperta, sorridente, linguaggio adatto" },
+  ],
+};
+
+const ITEMS2 = {
+  fr: [
+    { label: "Souligne un positif",         sub: "Toujours commencer par un point fort" },
+    { label: "Questionne la vendeuse",      sub: "« Qu'as-tu pensé de ta vente ? »" },
+    { label: "Check factuel du parcours",   sub: "Souligne les problématiques sans jugement" },
+    { label: "Part de la collaboratrice",   sub: "« Comment aurais-tu pu faire ? »" },
+    { label: "Verrouille par l'exemple",    sub: "« Donne-moi ta phrase d'accroche pour ce cas »" },
+    { label: "Reboost pour la suite",       sub: "Projette vers la prochaine vente" },
+  ],
+  it: [
+    { label: "Sottolinea un positivo",      sub: "Iniziare sempre con un punto di forza" },
+    { label: "Interroga la venditrice",     sub: "« Cosa hai pensato della tua vendita? »" },
+    { label: "Check fattuale del percorso", sub: "Evidenzia le problematiche senza giudizio" },
+    { label: "Parte dalla collaboratrice",  sub: "« Come avresti potuto fare? »" },
+    { label: "Blocca con l'esempio",        sub: "« Dimmi la tua frase d'approccio per questo caso »" },
+    { label: "Reboost per la prossima",     sub: "Proietta verso la prossima vendita" },
+  ],
+};
+
+const UI = {
+  fr: {
+    eyebrow: "Outil de pilotage terrain",
+    title: "Débriefing Vente",
+    bloc1Title: "Parcours de vente",
+    bloc1Sub: "Ce que j'attends d'un service client d'excellence",
+    bloc2Title: "Le coin du coach",
+    bloc2Sub: "Checklist de posture coach",
+    ok: "OK", encours: "En cours", atrav: "À travailler",
+    fait: "Fait", partiel: "Partiel", manquant: "Manquant",
+    hint: "Tap = cycle",
+    commentsLabel: "Commentaires libres",
+    commentsPh: "Points de contexte, situation particulière, axes prioritaires…",
+    btnExport: "Exporter le bilan",
+    btnShare: "↑ Partager", btnCopy: "Copier", btnClose: "Fermer",
+    modalTitle: "Bilan de séance",
+    ecouteePh: "Nom de l'écoutée", coachPh: "Nom du coach",
+    scoreLabel: "Score global", scoreSub: "Touchez les cases pour évaluer",
+    statusLabels: { vert: '✓ Tout est OK', orange: '◐ Sur la voie', rouge: '✕ Trop de manquants' },
+    statusText: { vert: 'Tout est OK', orange: 'Sur la voie', rouge: 'Points à travailler' },
+    sText: ['Non évalué', 'OK', 'En cours', 'À travailler'],
+    shareTitle: "Débriefing vente", shareHeader: "🏪 *CALZEDONIA — Débriefing vente*",
+    shareVendeur: "Vendeur·se", shareCoach: "Coach",
+    shareScore: "Score", shareParcoursTitle: "PARCOURS DE VENTE",
+    shareOk: "✅ *Points forts*", shareEncours: "🔶 *En progression*",
+    shareAtrav: "🔴 *À travailler en priorité*", shareNonEval: "⬜ *Non évalué*",
+    shareComments: "💬 *Commentaires*",
+    exportParcoursTitle: "Score — Parcours de vente",
+    exportCoachTitle: "Le coin du coach · Checklist",
+    exportCoachNote: "Usage interne coach — ne compte pas dans l'évaluation",
+    exportFait: "✓ Fait", exportAFaire: "○ À faire",
+    copiedMsg: "Copié dans le presse-papier",
+  },
+  it: {
+    eyebrow: "Strumento di pilotaggio",
+    title: "Debriefing Vendita",
+    bloc1Title: "Percorso di vendita",
+    bloc1Sub: "Quello che mi aspetto da un servizio clienti d'eccellenza",
+    bloc2Title: "L'angolo del coach",
+    bloc2Sub: "Checklist di postura coach",
+    ok: "OK", encours: "In corso", atrav: "Da lavorare",
+    fait: "Fatto", partiel: "Parziale", manquant: "Mancante",
+    hint: "Tap = ciclo",
+    commentsLabel: "Commenti liberi",
+    commentsPh: "Contesto, situazione particolare, assi prioritari…",
+    btnExport: "Esporta il bilancio",
+    btnShare: "↑ Condividi", btnCopy: "Copia", btnClose: "Chiudi",
+    modalTitle: "Bilancio di sessione",
+    ecouteePh: "Nome della venditrice", coachPh: "Nome del coach",
+    scoreLabel: "Punteggio globale", scoreSub: "Tocca le caselle per valutare",
+    statusLabels: { vert: '✓ Tutto OK', orange: '◐ Sulla strada giusta', rouge: '✕ Troppi mancanti' },
+    statusText: { vert: 'Tutto OK', orange: 'Sulla strada giusta', rouge: 'Punti da lavorare' },
+    sText: ['Non valutato', 'OK', 'In corso', 'Da lavorare'],
+    shareTitle: "Debriefing vendita", shareHeader: "🏪 *CALZEDONIA — Debriefing vendita*",
+    shareVendeur: "Venditrice", shareCoach: "Coach",
+    shareScore: "Punteggio", shareParcoursTitle: "PERCORSO DI VENDITA",
+    shareOk: "✅ *Punti di forza*", shareEncours: "🔶 *In progressione*",
+    shareAtrav: "🔴 *Da lavorare in priorità*", shareNonEval: "⬜ *Non valutato*",
+    shareComments: "💬 *Commenti*",
+    exportParcoursTitle: "Punteggio — Percorso di vendita",
+    exportCoachTitle: "L'angolo del coach · Checklist",
+    exportCoachNote: "Uso interno coach — non conta nella valutazione",
+    exportFait: "✓ Fatto", exportAFaire: "○ Da fare",
+    copiedMsg: "Copiato negli appunti",
+  },
+};
+
+let lang = 'fr';
+let items1 = ITEMS1.fr;
+let items2 = ITEMS2.fr;
+
+function setLang(l) {
+  lang = l;
+  items1 = ITEMS1[l];
+  items2 = ITEMS2[l];
+  const u = UI[l];
+
+  // Header
+  document.getElementById('txt-eyebrow').textContent = u.eyebrow;
+  document.getElementById('txt-title').textContent = u.title;
+
+  // Identity
+  document.getElementById('ecoutee').placeholder = u.ecouteePh;
+  document.getElementById('coach').placeholder = u.coachPh;
+
+  // Score global (only if not yet evaluated)
+  const f1 = getFilled('bloc1');
+  if (f1 === 0) {
+    document.getElementById('globalLabel').textContent = u.scoreLabel;
+    document.getElementById('globalSub').textContent = u.scoreSub;
+  }
+
+  // Bloc titles
+  document.getElementById('txt-bloc1-title').textContent = u.bloc1Title;
+  document.getElementById('txt-bloc1-sub').textContent = u.bloc1Sub;
+  document.getElementById('txt-bloc2-title').textContent = u.bloc2Title;
+  document.getElementById('txt-bloc2-sub').textContent = u.bloc2Sub;
+
+  // Legend
+  document.getElementById('txt-ok').textContent = u.ok;
+  document.getElementById('txt-encours').textContent = u.encours;
+  document.getElementById('txt-atrav').textContent = u.atrav;
+  document.getElementById('txt-fait').textContent = u.fait;
+  document.getElementById('txt-partiel').textContent = u.partiel;
+  document.getElementById('txt-manquant').textContent = u.manquant;
+  document.getElementById('txt-hint').textContent = u.hint;
+
+  // Comments
+  document.getElementById('txt-comments-label').textContent = u.commentsLabel;
+  document.getElementById('comments').placeholder = u.commentsPh;
+
+  // Buttons
+  document.getElementById('txt-btn-export').textContent = u.btnExport;
+  document.getElementById('txt-btn-share').textContent = u.btnShare;
+  document.getElementById('txt-btn-copy').textContent = u.btnCopy;
+  document.getElementById('txt-btn-close').textContent = u.btnClose;
+  document.getElementById('txt-modal-title').textContent = u.modalTitle;
+  document.getElementById('toast').textContent = u.copiedMsg;
+
+  // Lang button styles
+  document.getElementById('btn-fr').style.borderColor = l === 'fr' ? 'var(--corail-clair)' : '#5a4e44';
+  document.getElementById('btn-fr').style.color = l === 'fr' ? 'var(--corail-clair)' : 'var(--sable)';
+  document.getElementById('btn-it').style.borderColor = l === 'it' ? 'var(--corail-clair)' : '#5a4e44';
+  document.getElementById('btn-it').style.color = l === 'it' ? 'var(--corail-clair)' : 'var(--sable)';
+
+  document.getElementById('timestamp').textContent = (l === 'fr' ? 'Séance du ' : 'Sessione del ') + getTimestamp();
+
+  updateAll();
+}
 
 // 0=vide 1=vert 2=orange 3=rouge
 const state = {
-  bloc1: new Array(items1.length).fill(0),
-  bloc2: new Array(items2.length).fill(0),
+  bloc1: new Array(11).fill(0),
+  bloc2: new Array(6).fill(0),
 };
 
 const S_ICON  = ['', '✓', '~', '✕'];
 const S_COLOR = ['#ccc', '#4a7c5e', '#c47c2a', '#b83832'];
-const S_BG    = ['var(--beige)', 'var(--vert-ok)', 'var(--orange-voie)', 'var(--rouge-manq)'];
-const S_TEXT  = ['Non évalué', 'OK', 'En cours', 'À travailler'];
-const S_LABEL = ['—', '✓ Tout est OK', '◐ Sur la voie', '✕ Trop de manquants'];
 
 const ST_COLORS = { vert: '#4a7c5e', orange: '#c47c2a', rouge: '#b83832' };
 const ST_BG     = { vert: '#d4ead9', orange: '#f0ddb8', rouge: '#f0cec8' };
-const ST_LABELS = { vert: '✓ Tout est OK', orange: '◐ Sur la voie', rouge: '✕ Trop de manquants' };
+
+function getSTLabels() { return UI[lang].statusLabels; }
+function getSText()    { return UI[lang].sText; }
 
 function getWeighted(blocKey) {
   return state[blocKey].reduce((a, v) => a + (v === 1 ? 1 : v === 2 ? 0.5 : 0), 0);
@@ -575,12 +735,13 @@ function updateAll() {
   const t1 = items1.length, t2 = items2.length;
   const w1 = getWeighted('bloc1'), w2 = getWeighted('bloc2');
   const f1 = getFilled('bloc1'), f2 = getFilled('bloc2');
+  const u = UI[lang];
 
   // badge 1
   const b1 = document.getElementById('score1');
   if (f1 > 0) {
     const st = getStatus(w1, t1);
-    b1.textContent = `${f1}/${t1} — ${ST_LABELS[st]}`;
+    b1.textContent = `${f1}/${t1} — ${u.statusLabels[st]}`;
     b1.style.background = ST_BG[st];
     b1.style.color = ST_COLORS[st];
   } else {
@@ -593,7 +754,7 @@ function updateAll() {
   const b2 = document.getElementById('score2');
   const coachDone = state.bloc2.filter(v => v === 1).length;
   if (f2 > 0) {
-    b2.textContent = `${coachDone}/${t2} faits`;
+    b2.textContent = `${coachDone}/${t2} ${u.fait.toLowerCase()}`;
     b2.style.background = coachDone === t2 ? ST_BG.vert : '#2a2520';
     b2.style.color = coachDone === t2 ? ST_COLORS.vert : '#9a8e84';
   } else {
@@ -602,7 +763,7 @@ function updateAll() {
     b2.style.color = '#6b5e54';
   }
 
-  // global = bloc1 seulement (le coin du coach n'entre pas dans l'évaluation)
+  // global = bloc1 seulement
   const dot = document.getElementById('globalDot');
   const sg  = document.getElementById('scoreGlobal');
   if (f1 === 0) {
@@ -611,8 +772,8 @@ function updateAll() {
     dot.style.color = 'var(--gris)';
     sg.style.borderColor = 'var(--beige-sombre)';
     sg.style.background = 'var(--blanc)';
-    document.getElementById('globalLabel').textContent = 'Score global';
-    document.getElementById('globalSub').textContent = 'Touchez les cases pour évaluer';
+    document.getElementById('globalLabel').textContent = u.scoreLabel;
+    document.getElementById('globalSub').textContent = u.scoreSub;
   } else {
     const pct = Math.round((w1 / t1) * 100);
     const gs = getStatus(w1, t1);
@@ -621,8 +782,8 @@ function updateAll() {
     dot.style.color = '#fff';
     sg.style.borderColor = ST_COLORS[gs];
     sg.style.background = { vert: '#f4faf6', orange: '#fffbf4', rouge: '#fff8f7' }[gs];
-    document.getElementById('globalLabel').textContent = ST_LABELS[gs];
-    document.getElementById('globalSub').textContent = `Parcours vente · ${f1}/${t1} items évalués`;
+    document.getElementById('globalLabel').textContent = u.statusLabels[gs];
+    document.getElementById('globalSub').textContent = `${u.bloc1Title} · ${f1}/${t1}`;
   }
 
   renderList('list1', items1, 'bloc1');
@@ -645,36 +806,34 @@ function getTimestamp() {
 
 function buildExportHTML() {
   const ecoutee  = document.getElementById('ecoutee').value || '—';
-  const coach  = document.getElementById('coach').value || '—';
+  const coach    = document.getElementById('coach').value || '—';
   const ts       = getTimestamp();
+  const u        = UI[lang];
   const t1 = items1.length, t2 = items2.length;
   const w1 = getWeighted('bloc1');
-  const f1 = getFilled('bloc1'), f2 = getFilled('bloc2');
+  const f1 = getFilled('bloc1');
   const coachDone = state.bloc2.filter(v => v === 1).length;
-  const gSt = f1 > 0 ? getStatus(w1, t1) : null;
-  const pct = gSt ? Math.round((w1 / t1) * 100) : null;
-  const comments = document.getElementById('comments').value;
   const st1 = f1 > 0 ? getStatus(w1, t1) : null;
+  const pct = st1 ? Math.round((w1 / t1) * 100) : null;
+  const comments = document.getElementById('comments').value;
 
   function rows(items, bk) {
     return items.map((item, i) => {
       const v = state[bk][i];
       return `<div class="export-row">
         <div class="er-dot" style="background:${S_COLOR[v]}"></div>
-        <span style="color:${S_COLOR[v]};font-size:10px;min-width:68px">${S_TEXT[v]}</span>
+        <span style="color:${S_COLOR[v]};font-size:10px;min-width:68px">${u.sText[v]}</span>
         <span style="color:${v === 3 ? '#b83832' : '#333'};font-weight:${v === 3 ? '500' : '300'}">${item.label}</span>
       </div>`;
     }).join('');
   }
 
-  // coach section : simple check (vert=fait, autre=non fait)
   function coachRows() {
     return items2.map((item, i) => {
-      const v = state.bloc2[i];
-      const done = v === 1;
+      const done = state.bloc2[i] === 1;
       return `<div class="export-row">
         <div class="er-dot" style="background:${done ? '#4a7c5e' : '#ccc'}"></div>
-        <span style="color:${done ? '#4a7c5e' : '#aaa'};font-weight:${done ? '500' : '300'}">${done ? '✓ Fait' : '○ À faire'}</span>
+        <span style="color:${done ? '#4a7c5e' : '#aaa'};font-weight:${done ? '500' : '300'}">${done ? u.exportFait : u.exportAFaire}</span>
         <span style="color:#333;font-weight:300;margin-left:4px">${item.label}</span>
       </div>`;
     }).join('');
@@ -684,28 +843,28 @@ function buildExportHTML() {
     <div class="export-section">
       <h4>Identification</h4>
       <div class="export-meta">
-        <strong>Écoutée :</strong> ${ecoutee}<br>
-        <strong>Coach :</strong> ${coach}<br>
-        <strong>Date & heure :</strong> ${ts}
+        <strong>${u.ecouteePh} :</strong> ${ecoutee}<br>
+        <strong>${u.coachPh} :</strong> ${coach}<br>
+        <strong>Date :</strong> ${ts}
       </div>
     </div>
     <div class="export-section">
-      <h4>Score — Parcours de vente</h4>
+      <h4>${u.exportParcoursTitle}</h4>
       ${st1
-        ? `<span class="export-status" style="background:${ST_BG[st1]};color:${ST_COLORS[st1]}">${pct}% — ${ST_LABELS[st1]}</span>`
-        : `<span class="export-status" style="background:#f0ebe3;color:#8a8278">Non renseigné</span>`}
-      <div class="export-meta">${f1}/${t1} items évalués · Le coin du coach n'entre pas dans ce score</div>
+        ? `<span class="export-status" style="background:${ST_BG[st1]};color:${ST_COLORS[st1]}">${pct}% — ${u.statusLabels[st1]}</span>`
+        : `<span class="export-status" style="background:#f0ebe3;color:#8a8278">—</span>`}
+      <div class="export-meta">${f1}/${t1}</div>
     </div>
     <div class="export-section">
-      <h4>01 — Parcours de vente (${f1}/${t1})</h4>
+      <h4>01 — ${u.bloc1Title} (${f1}/${t1})</h4>
       ${rows(items1, 'bloc1')}
     </div>
     <div class="export-section" style="border-top:2px solid #1a1714;padding-top:14px">
-      <h4 style="color:#1a1714">02 — Le coin du coach · Checklist (${coachDone}/${t2} faits)</h4>
-      <div class="export-meta" style="margin-bottom:8px;font-style:italic">Usage interne coach — ne compte pas dans l'évaluation</div>
+      <h4 style="color:#1a1714">02 — ${u.exportCoachTitle} (${coachDone}/${t2})</h4>
+      <div class="export-meta" style="margin-bottom:8px;font-style:italic">${u.exportCoachNote}</div>
       ${coachRows()}
     </div>
-    ${comments ? `<div class="export-section"><h4>Commentaires</h4><div class="export-meta" style="white-space:pre-wrap">${comments}</div></div>` : ''}
+    ${comments ? `<div class="export-section"><h4>${u.commentsLabel}</h4><div class="export-meta" style="white-space:pre-wrap">${comments}</div></div>` : ''}
   `;
 }
 
@@ -713,6 +872,7 @@ function buildShareMessage() {
   const ecoutee = document.getElementById('ecoutee').value || '—';
   const coach   = document.getElementById('coach').value || '—';
   const ts      = getTimestamp();
+  const u       = UI[lang];
   const t1 = items1.length;
   const w1 = getWeighted('bloc1');
   const f1 = getFilled('bloc1');
@@ -721,35 +881,33 @@ function buildShareMessage() {
   const comments = document.getElementById('comments').value;
 
   const statusEmoji = { vert: '🟢', orange: '🟠', rouge: '🔴' };
-  const statusText  = { vert: 'Tout est OK', orange: 'Sur la voie', rouge: 'Points à travailler' };
 
-  // Grouper les items par statut
   const ok      = items1.filter((_, i) => state.bloc1[i] === 1).map(it => it.label);
   const enCours = items1.filter((_, i) => state.bloc1[i] === 2).map(it => it.label);
   const aTrav   = items1.filter((_, i) => state.bloc1[i] === 3).map(it => it.label);
   const nonEval = items1.filter((_, i) => state.bloc1[i] === 0).map(it => it.label);
 
-  let msg = `🏪 *CALZEDONIA — Débriefing vente*\n`;
+  let msg = `${u.shareHeader}\n`;
   msg += `━━━━━━━━━━━━━━━━━━━\n`;
-  msg += `👤 *Vendeur·se :* ${ecoutee}\n`;
-  msg += `🎯 *Coach :* ${coach}\n`;
+  msg += `👤 *${u.shareVendeur} :* ${ecoutee}\n`;
+  msg += `🎯 *${u.shareCoach} :* ${coach}\n`;
   msg += `📅 ${ts}\n\n`;
 
   if (gSt) {
-    msg += `${statusEmoji[gSt]} *Score : ${pct}% — ${statusText[gSt]}*\n`;
+    msg += `${statusEmoji[gSt]} *${u.shareScore} : ${pct}% — ${u.statusText[gSt]}*\n`;
     msg += `━━━━━━━━━━━━━━━━━━━\n\n`;
   }
 
-  msg += `📋 *PARCOURS DE VENTE (${f1}/${t1})*\n\n`;
+  msg += `📋 *${u.shareParcoursTitle} (${f1}/${t1})*\n\n`;
 
-  if (ok.length)      msg += `✅ *Points forts*\n${ok.map(l => `• ${l}`).join('\n')}\n\n`;
-  if (enCours.length) msg += `🔶 *En progression*\n${enCours.map(l => `• ${l}`).join('\n')}\n\n`;
-  if (aTrav.length)   msg += `🔴 *À travailler en priorité*\n${aTrav.map(l => `• ${l}`).join('\n')}\n\n`;
-  if (nonEval.length && f1 > 0) msg += `⬜ *Non évalué*\n${nonEval.map(l => `• ${l}`).join('\n')}\n\n`;
+  if (ok.length)      msg += `${u.shareOk}\n${ok.map(l => `• ${l}`).join('\n')}\n\n`;
+  if (enCours.length) msg += `${u.shareEncours}\n${enCours.map(l => `• ${l}`).join('\n')}\n\n`;
+  if (aTrav.length)   msg += `${u.shareAtrav}\n${aTrav.map(l => `• ${l}`).join('\n')}\n\n`;
+  if (nonEval.length && f1 > 0) msg += `${u.shareNonEval}\n${nonEval.map(l => `• ${l}`).join('\n')}\n\n`;
 
   if (comments) {
     msg += `━━━━━━━━━━━━━━━━━━━\n`;
-    msg += `💬 *Commentaires*\n${comments}\n`;
+    msg += `${u.shareComments}\n${comments}\n`;
   }
 
   return msg;
@@ -796,9 +954,7 @@ function copyText() {
   });
 }
 
-document.getElementById('timestamp').textContent = 'Séance du ' + getTimestamp();
-renderList('list1', items1, 'bloc1');
-renderList('list2', items2, 'bloc2');
+setLang('fr');
 </script>
 </body>
 </html>
