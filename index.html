@@ -391,13 +391,125 @@
   .btn-share { background: var(--corail); color: white; }
   .btn-copy { background: var(--noir); color: var(--blanc); }
   .btn-close { background: var(--beige); color: var(--noir); }
+  .btn-save { background: var(--vert-ok); color: white; width: 100%; margin-top: 8px; }
+
+  /* ── CHAMP MAGASIN ── */
+  .magasin-bar {
+    background: #f7f4f0;
+    border-bottom: 1px solid var(--beige-sombre);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .magasin-bar input {
+    background: var(--beige);
+    border: 1px solid var(--beige-sombre);
+    border-radius: 2px;
+    padding: 8px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--noir);
+    width: 140px;
+    flex-shrink: 0;
+  }
+  .magasin-bar input:focus { outline: none; border-color: var(--sable); }
+  .magasin-bar input::placeholder { color: var(--gris); font-weight: 300; }
+  .magasin-hint {
+    font-size: 10px;
+    color: var(--gris);
+    font-weight: 300;
+    letter-spacing: 0.3px;
+    font-style: italic;
+  }
+
+  /* ── BOUTON ENREGISTRER ── */
+  .save-wrap {
+    padding: 0 16px 16px;
+  }
+  .btn-enregistrer {
+    width: 100%;
+    background: var(--vert-ok);
+    color: var(--blanc);
+    border: none;
+    padding: 15px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    font-weight: 400;
+    transition: background 0.2s;
+  }
+  .btn-enregistrer:active { background: #3a6049; }
+
+  /* ── PIN MODAL ── */
+  .pin-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,23,20,0.75);
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .pin-overlay.open { display: flex; }
+  .pin-box {
+    background: var(--blanc);
+    border-radius: 6px;
+    padding: 28px 24px 24px;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    animation: fadeIn 0.2s ease;
+  }
+  @keyframes fadeIn { from { opacity:0; transform:scale(0.95); } to { opacity:1; transform:scale(1); } }
+  .pin-box h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .pin-box p { font-size: 12px; color: var(--gris); margin-bottom: 18px; font-weight: 300; }
+  .pin-input {
+    width: 100%;
+    background: var(--beige);
+    border: 1.5px solid var(--beige-sombre);
+    border-radius: 2px;
+    padding: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 22px;
+    text-align: center;
+    letter-spacing: 8px;
+    color: var(--noir);
+    margin-bottom: 14px;
+  }
+  .pin-input:focus { outline: none; border-color: var(--sable); }
+  .pin-error { font-size: 11px; color: var(--rouge-manq); margin-bottom: 10px; min-height: 16px; }
+  .pin-actions { display: flex; gap: 8px; }
+  .btn-pin-ok {
+    flex: 2; background: var(--noir); color: var(--blanc);
+    border: none; padding: 12px; border-radius: 2px;
+    font-family: 'DM Sans', sans-serif; font-size: 11px;
+    letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+  }
+  .btn-pin-cancel {
+    flex: 1; background: var(--beige); color: var(--noir);
+    border: none; padding: 12px; border-radius: 2px;
+    font-family: 'DM Sans', sans-serif; font-size: 11px;
+    letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+  }
 
   .toast {
     position: fixed; bottom: 20px; left: 50%;
     transform: translateX(-50%) translateY(60px);
     background: var(--noir); color: var(--blanc);
     padding: 10px 20px; border-radius: 20px; font-size: 12px;
-    letter-spacing: 1px; z-index: 300; transition: transform 0.3s ease;
+    letter-spacing: 1px; z-index: 400; transition: transform 0.3s ease;
     pointer-events: none; white-space: nowrap;
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
@@ -418,6 +530,11 @@
   <input type="text" id="ecoutee" data-ph-fr="Nom de l'écoutée" data-ph-it="Nome della venditrice" placeholder="Nom de l'écoutée" autocomplete="off">
   <input type="text" id="coach" data-ph-fr="Nom du coach" data-ph-it="Nome del coach" placeholder="Nom du coach" autocomplete="off">
   <div class="identity-ts" id="timestamp"></div>
+</div>
+
+<div class="magasin-bar">
+  <input type="text" id="magasin" placeholder="N° magasin" autocomplete="off" inputmode="numeric" maxlength="10">
+  <span class="magasin-hint" id="txt-magasin-hint">Mémorisé sur cet appareil</span>
 </div>
 
 <div class="score-global" id="scoreGlobal">
@@ -485,6 +602,48 @@
 
 <div class="export-wrap">
   <button class="btn-export" id="txt-btn-export" onclick="openModal()">Exporter le bilan</button>
+</div>
+
+<div class="save-wrap">
+  <button class="btn-enregistrer" id="txt-btn-save" onclick="openPin()">⬆ Enregistrer la session</button>
+</div>
+
+<!-- SESSION MODAL (copier-coller tableur) -->
+<div class="pin-overlay" id="sessionOverlay" onclick="handleSessionOverlayClick(event)">
+  <div class="pin-box" style="max-width:420px;text-align:left">
+    <h3 style="text-align:center;margin-bottom:4px" id="txt-session-title">Session enregistrée</h3>
+    <p style="text-align:center;margin-bottom:16px" id="txt-session-sub">Copiez et collez dans votre tableur</p>
+
+    <div style="margin-bottom:12px">
+      <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gris);margin-bottom:6px" id="txt-session-headers-label">En-têtes — à coller une seule fois en ligne 1</div>
+      <div style="background:var(--beige);border:1px solid var(--beige-sombre);border-radius:2px;padding:10px;font-size:11px;color:var(--gris);line-height:1.6;font-style:italic" id="txt-session-headers-preview"></div>
+      <button onclick="copyHeaders()" id="txt-session-copy-headers" style="margin-top:8px;width:100%;background:var(--beige-sombre);color:var(--noir);border:none;padding:9px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Copier les en-têtes</button>
+    </div>
+
+    <div style="margin-bottom:16px">
+      <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gris);margin-bottom:6px" id="txt-session-data-label">Données de la session</div>
+      <div style="background:var(--noir);border-radius:2px;padding:10px;font-size:11px;color:#c8b99a;line-height:1.6" id="txt-session-data-preview"></div>
+    </div>
+
+    <div class="pin-actions">
+      <button class="btn-pin-ok" onclick="copyData()" id="txt-session-copy">⬆ Copier la ligne</button>
+      <button class="btn-pin-cancel" onclick="closeSession()" id="txt-session-close">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- PIN MODAL -->
+<div class="pin-overlay" id="pinOverlay">
+  <div class="pin-box">
+    <h3 id="txt-pin-title">Code coach</h3>
+    <p id="txt-pin-sub">Entrez le code pour enregistrer la session dans le suivi DR</p>
+    <input type="password" class="pin-input" id="pinInput" maxlength="6" inputmode="numeric" placeholder="••••">
+    <div class="pin-error" id="pinError"></div>
+    <div class="pin-actions">
+      <button class="btn-pin-ok" onclick="checkPin()" id="txt-pin-ok">Valider</button>
+      <button class="btn-pin-cancel" onclick="closePin()" id="txt-pin-cancel">Annuler</button>
+    </div>
+  </div>
 </div>
 
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
@@ -948,10 +1107,156 @@ function handleOverlayClick(e) {
 }
 function copyText() {
   navigator.clipboard.writeText(buildExportText()).then(() => {
-    const t = document.getElementById('toast');
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2200);
+    showToast(UI[lang].copiedMsg, 2200);
   });
+}
+
+// ── MAGASIN (mémorisé) ────────────────────
+const magasinInput = document.getElementById('magasin');
+const savedMagasin = localStorage.getItem('calz_magasin');
+if (savedMagasin) magasinInput.value = savedMagasin;
+magasinInput.addEventListener('change', () => {
+  localStorage.setItem('calz_magasin', magasinInput.value.trim());
+});
+
+// ── PIN ───────────────────────────────────
+// Change this PIN to whatever you want — coaches will need to know it
+const COACH_PIN = '1308';
+
+function openPin() {
+  document.getElementById('pinInput').value = '';
+  document.getElementById('pinError').textContent = '';
+  document.getElementById('pinOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('pinInput').focus(), 100);
+}
+function closePin() {
+  document.getElementById('pinOverlay').classList.remove('open');
+}
+function checkPin() {
+  const entered = document.getElementById('pinInput').value.trim();
+  if (entered === COACH_PIN) {
+    closePin();
+    saveSession();
+  } else {
+    document.getElementById('pinError').textContent =
+      lang === 'fr' ? 'Code incorrect — réessayez' : 'Codice errato — riprovare';
+    document.getElementById('pinInput').value = '';
+    document.getElementById('pinInput').focus();
+  }
+}
+// Allow Enter key in PIN input
+document.getElementById('pinInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkPin();
+});
+
+// ── ENREGISTREMENT → COPIER-COLLER TABLEUR ──
+const HEADERS_ROW = [
+  'Date', 'Heure', 'N° Magasin', 'Écoutée', 'Coach', 'Langue',
+  'Score (%)', 'Statut', 'Items évalués / Total',
+  ...Array.from({length: 11}, (_, i) => `Item ${i+1}`),
+  'Commentaires'
+];
+
+function buildDataRow() {
+  const u = UI[lang];
+  const ecoutee  = document.getElementById('ecoutee').value.trim() || '—';
+  const coach    = document.getElementById('coach').value.trim() || '—';
+  const magasin  = document.getElementById('magasin').value.trim() || '—';
+  const comments = document.getElementById('comments').value.trim();
+  const t1 = items1.length;
+  const w1 = getWeighted('bloc1');
+  const f1 = getFilled('bloc1');
+  const pct    = f1 > 0 ? Math.round((w1 / t1) * 100) : 0;
+  const status = f1 > 0 ? u.statusLabels[getStatus(w1, t1)].replace(/[✓◐✕]/g, '').trim() : '—';
+  const now    = new Date();
+  // Valeurs numériques : 2=acquis, 1=en cours, 0=à travailler, vide=non évalué
+  const scoreMap = ['' , 2, 1, 0];
+  const itemCols = items1.map((_, i) => scoreMap[state.bloc1[i]]);
+
+  return [
+    now.toLocaleDateString('fr-FR'),
+    now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+    magasin,
+    ecoutee,
+    coach,
+    lang.toUpperCase(),
+    pct,
+    status,
+    `${f1}/${t1}`,
+    ...itemCols,
+    comments,
+  ];
+}
+
+function saveSession() {
+  const u = UI[lang];
+
+  const dynamicHeaders = [
+    'Date', 'Heure', 'N° Magasin',
+    u.ecouteePh, u.coachPh, 'Langue',
+    'Score (%)', 'Statut', 'Évalués / Total',
+    ...items1.map((it, i) => `${i+1}. ${it.label}`),
+    u.commentsLabel,
+  ];
+
+  const dataRow = buildDataRow();
+
+  // Stocker les vraies tabulations pour copie
+  const headersTabbed = dynamicHeaders.join('\t');
+  const dataTabbed    = dataRow.join('\t');
+  document.getElementById('sessionOverlay').dataset.headers = headersTabbed;
+  document.getElementById('sessionOverlay').dataset.data    = dataTabbed;
+
+  // Affichage lisible (preview) — juste les champs clés
+  const ecoutee  = document.getElementById('ecoutee').value.trim() || '—';
+  const magasin  = document.getElementById('magasin').value.trim() || '—';
+  const pct      = dataRow[6];
+  const statut   = dataRow[7];
+
+  document.getElementById('txt-session-headers-preview').textContent =
+    dynamicHeaders.slice(0, 9).join(' · ') + ' · [items…]';
+
+  document.getElementById('txt-session-data-preview').innerHTML =
+    `📅 ${dataRow[0]} ${dataRow[1]}<br>` +
+    `🏪 Magasin ${magasin}<br>` +
+    `👤 ${ecoutee}<br>` +
+    `📊 Score : ${pct}% — ${statut}`;
+
+  document.getElementById('sessionOverlay').classList.add('open');
+}
+
+function copyHeaders() {
+  const raw = document.getElementById('sessionOverlay').dataset.headers;
+  navigator.clipboard.writeText(raw).then(() =>
+    showToast(lang === 'fr' ? 'En-têtes copiés ✓' : 'Intestazioni copiate ✓', 1800)
+  );
+}
+
+function copyData() {
+  const raw = document.getElementById('sessionOverlay').dataset.data;
+  navigator.clipboard.writeText(raw).then(() => {
+    showToast(lang === 'fr' ? '✓ Ligne copiée — colle dans ton tableur !' : '✓ Riga copiata!', 2500);
+    closeSession();
+  });
+}
+
+function closeSession() {
+  document.getElementById('sessionOverlay').classList.remove('open');
+}
+
+function handleSessionOverlayClick(e) {
+  if (e.target === document.getElementById('sessionOverlay')) closeSession();
+}
+
+function showToast(msg, duration) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => {
+    t.classList.remove('show');
+    t.textContent = UI[lang].copiedMsg;
+  }, duration);
 }
 
 setLang('fr');
